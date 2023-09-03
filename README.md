@@ -5,117 +5,103 @@ En esta sección se detallará el proceso de instalación y configuración del s
 ### Instalación de dependencias
 Antes de instalar cualquier software, siempre es una buena práctica actualizar la lista de paquetes del sistema. Para lo cual se utilizaron los comandos:
   
- sudo apt update
- 
-Figura 4.2.1.1 Ejecución de update de librerías
-$ sudo apt upgrade
- 
-Figura 4.2.1.2 Ejecución de upgrade de librerías
+    sudo apt update
+
+    sudo apt upgrade
+
 Luego se instalaron las dependencias previo a la instalación de cowrie.
-$ sudo apt-get install git python3-virtualenv libssl-dev libffi-dev build-essential libpython3-dev python3-minimal authbind virtualenv python3-venv
+
+    sudo apt-get install git python3-virtualenv libssl-dev libffi-dev build-essential libpython3-dev python3-minimal authbind virtualenv python3-venv
  
-Figura 4.2.1.3 Instalación de dependencias de cowrie
 Es recomendado utilizar un usuario no root para la instalación, para lo cual se realizó la creación del usuario cowrie.
-$ sudo adduser --disabled-password cowrie
+
+    sudo adduser --disabled-password cowrie
  
-Figura 4.2.1.4 Creación de usuario cowrie
-Este usuario no tendrá asignada una contraseña [Figura 4.2.1.5], solo se podrá acceder mediante el comando: 
-$ sudo su – cowrie
+Este usuario no tendrá asignada una contraseña, solo se podrá acceder mediante el comando: 
+
+    sudo su – cowrie
  
-Figura 4.2.1.5 Acceso al usuario cowrie
-4.2.2	INSTALACIÓN DE COWRIE
+### Instalación de Cowrie
 Descargamos el código de cowrie desde el repositorio git:
-$ git clone http://github.com/cowrie/cowrie
-$ cd cowrie
+
+    git clone http://github.com/cowrie/cowrie
+    cd cowrie
  
-Figura 4.2.2.1 Cowrie descargado en la VM Lilubu
 Creamos un entorno virtual con python3 para ejecutar cowrie dentro del repositorio descargado e instalamos algunos requerimientos:
-$ python3 -m venv cowrie-env
-$ source cowrie-env/bin/activate
-(cowrie-env) $ python -m pip install --upgrade pip
-(cowrie-env) $ python -m pip install --upgrade -r requirements.txt
+
+    python3 -m venv cowrie-env
+    source cowrie-env/bin/activate
+    (cowrie-env) $ python -m pip install --upgrade pip
+    (cowrie-env) $ python -m pip install --upgrade -r requirements.txt
  
-Figura 4.2.2.2 Configuración de entorno virtual
-4.2.3	CONFIGURACIÓN DE COWRIE
+### Configuraicón de Cowrie
 La configuración de Cowrie se almacena en el archivo cowrie.cfg.dist ubicado en la ruta /home/cowrie/cowrie/etc. Copiamos la configuración al archivo cowrie.cfg para realizar las modificaciones que necesitamos, debido a que este archivo tiene mayor precedencia se leerá primero.
-$ cd /home/cowrie/cowrie/etc
-$ cp cowrie.cfg.dist cowrie.cfg
+
+    cd /home/cowrie/cowrie/etc
+    cp cowrie.cfg.dist cowrie.cfg
  
-Figura 4.2.3.1 Ruta donde se encuentra el archivo de configuración Cowrie
 En el archivo de configuración cowrie.cfg se modificaron parámetros como:
 -	Hostname: Nombre que observarán los atacantes al conectarse al honeypot
 -	Kernel_version, kernel_build_string, hardware_platform, operating: Información del sistema operativo que observará el atacante al conectarse al honeypot
 -	SSH options: Se activó el servicio SSH que simulará el honeypot y definió el puerto 2222 que usa cowrie para recibir las peticiones del servicio.
 -	Telnet option: Se activó el servicio Telnet que simulará el honeypot y definió el puerto 2223 que usa cowrie para recibir las peticiones del servicio.
- 
-Figura 4.2.3.1 Hostname del honeypot
- 
-Figura 4.2.3.2 Sistema operativo del honeypot
- 
- Figura 4.2.3.3 Configuración del servicio SSH en el honeypot
- 
-Figura 4.2.3.4 Configuración del servicio Telnet en el honeypot
+
 También observamos las rutas donde se almacenarán los logs de la actividad que se genere en el honeypot. 
 
- 
- Figura 4.2.3.5 Ruta donde se almacenan los logs de Cowrie
-4.2.4	CONFIGURACIÓN DE CONEXIONES
-Mapeamos las conexiones que recibirá la VM bajo el esquema indicado en la [Figura 4.2.4.1].
- 
-Figura 4.2.4.1 Diagrama de conexiones en Cowrie [9]
-Debido a que los atacantes intentarán acceder al honeypot por el puerto 22 (ssh) y 23 (telnet) de la VM, se modificó el puerto de escucha del servicio SSH al 22000 para no perder la administración de la máquina real, esto se realizó modificando el archivo ssh_config.
-$ sudo vi /etc/ssh/sshd_config
- 
-Figura 4.2.4.2 Cambio de puerto de escucha del servicio SSH
-Reiniciamos el servicio y validamos que el servicio SSH se encuentra activo por el puerto 22000.
-$ sudo systemctl restart sshd
-$ sudo ss -tulpn | grep ssh
- 
-Figura 4.2.4.3 Validación del cambio de puerto para el servicio SSH
-Las conexiones recibidas por los puertos 22 y 23 deben redirigirse a los puertos configurados para la simulación de los servicios en cowrie, para lo cual se utilizó iptables para redirigir las conexiones entrantes.
-$ sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
-$ sudo iptables -t nat -A PREROUTING -p tcp --dport 23 -j REDIRECT --to-port 2223
- 
-Figura 3.4.2.4.4 Configuración en iptables para la redirección de las conexiones
-4.2.5	CONFIGURACIÓN DE USUARIOS Y PASSWORDS “VÁLIDOS”
-Configuramos la lista de usuarios y password válidos que serán usados por los atacantes para la autenticación exitosa en el honeypot, se duplicó el archivo de configuración userdb.example y se guardaron los cambios en el archivo userdb.txt.
-$cd /home/cowrie/cowrie/etc
-$cp userdb.example userdb.txt
- 
-Figura 4.2.5.1 Configuración del archivo usrdb.txt
+### Configuración de conexiones
+Mapeamos las conexiones que recibirá la VM
 
-4.2.6	INICIAMOS COWRIE
-Para iniciar los servicios de cowrie ejecutamos los comandos:
-$sudo su - cowrie
-$cd /home/cowrie/cowrie/bin
-$./cowrie start
+Debido a que los atacantes intentarán acceder al honeypot por el puerto 22 (ssh) y 23 (telnet) de la VM, se modificó el puerto de escucha del servicio SSH al 22000 para no perder la administración de la máquina real, esto se realizó modificando el archivo ssh_config.
+
+    sudo vi /etc/ssh/sshd_config
+
+Reiniciamos el servicio y validamos que el servicio SSH se encuentra activo por el puerto 22000.
+
+    sudo systemctl restart sshd
+    sudo ss -tulpn | grep ssh
+
+Las conexiones recibidas por los puertos 22 y 23 deben redirigirse a los puertos configurados para la simulación de los servicios en cowrie, para lo cual se utilizó iptables para redirigir las conexiones entrantes.
+
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 23 -j REDIRECT --to-port 2223
  
-Figura 4.2.6.1 Inicio del servicio Cowrie
-4.2.7	CONFIGURACIÓN DE USUARIO “PHIL”
+### Configuración de usuarios y contraseñas válidas
+Configuramos la lista de usuarios y password válidos que serán usados por los atacantes para la autenticación exitosa en el honeypot, se duplicó el archivo de configuración userdb.example y se guardaron los cambios en el archivo userdb.txt.
+
+    cd /home/cowrie/cowrie/etc
+    cp userdb.example userdb.txt
+
+### Iniciamos Cowrie
+Para iniciar los servicios de cowrie ejecutamos los comandos:
+
+    sudo su - cowrie
+    cd /home/cowrie/cowrie/bin
+    ./cowrie start
+
+### Configuración de usuario 'Phil'
 Al consultar los archivos /etc/passwd, /etc/group y /etc/shadow se observó la presencia del usuario Phil, el cual es un usuario por defecto de Cowrie. Para evitar que los atacantes descubran que nuestro dispositivo es un honeypot por la presencia de este usuario, se modificaron los archivos para reemplazar el usuario ‘Phil’ por el usuario ‘admin’ [10].
 Ingresamos a la ruta Cowrie y se utilizó el editor fs.pickle para cambiar el home del usuario
-$ cd  /home/cowrie/cowrie
-$ python3 bin/fsctl share/cowrie/fs.pickle
-fs.pickle:/$ mv /home/phil /home/admin
- 
-Figura 4.2.7.1 Cambio del home del usuario Phil
+
+    cd  /home/cowrie/cowrie
+    python3 bin/fsctl share/cowrie/fs.pickle
+    fs.pickle:/$ mv /home/phil /home/admin
+
 Se editó el archivo /etc/passwd con los datos del usuario admin
-$vi /home/cowrie/cowrie/honeyfs/etc/passwd
- 
-Figura 4.2.7.2 Configuración del archivo /etc/passwd
+
+    vi /home/cowrie/cowrie/honeyfs/etc/passwd
+
 Se editó el archivo /etc/group con los datos del usuario admin
-$vi /home/cowrie/cowrie/honeyfs/etc/group
- 
-Figura 4.2.7.3 Configuración del archivo /etc/group
+
+    vi /home/cowrie/cowrie/honeyfs/etc/group
+
 Se editó el archivo /etc/shadow con los datos del usuario admin
-$vi /home/cowrie/cowrie/honeyfs/etc/shadow
- 
-Figura 4.2.7.4 Configuración del archivo /etc/shadow
- 
+
+    vi /home/cowrie/cowrie/honeyfs/etc/shadow
+
 Se reiniciaron los servicios de Cowrie para validar los cambios:
-$/home/cowrie/cowrie/bin/cowrie restart
- 
-Figura 4.2.7.5 Reinicio de servicios en Cowrie
+
+    /home/cowrie/cowrie/bin/cowrie restart
+
 Se confirman los cambios ejecutados
  
 Figura 4.2.7.6 Archivo /etc/passwd antes del cambio
