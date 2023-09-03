@@ -161,7 +161,7 @@ Se reiniciaron los servicios de Cowrie para validar los cambios:
 
 Se confirman los cambios ejecutados
 
-## DESPLIEGUE DE ELK
+## Despliegue de ELK
 En esta sección se detallará el proceso de instalación y configuración de la plataforma conocida como ELK (Elasticsearch, Logstash y Kibana) + Filebeat.
 Debido a que ELK se configura en localhost se instaló el proxy reverso Ngnix para el acceso desde internet mediante la ip pública de la VM. 
 
@@ -380,7 +380,7 @@ Validamos en el menú Discover los eventos recibidos, aquí podemos aplicar filt
 
 Se recopilaron eventos durante 15 días lo cual permitió contar con información valiosa para el análisis, la cual fue disponibilizada en el dashboard Honeypot IoT, donde se resumieron los aspectos más importantes en una sola vista. 
 
-<img width="1200" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/ceb132c4-862e-4164-8d21-ee7544ac1837">
-<img width="1200" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/b50d9c2b-f69e-4d1a-b61b-36b2af239332">
-<img width="1200" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/1bf4c103-241e-4cb6-892a-aefda8f5b5ab">
-<img width="1200" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/0997b506-f434-4016-94b9-b2fa5f97146e">
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/ceb132c4-862e-4164-8d21-ee7544ac1837">
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/b50d9c2b-f69e-4d1a-b61b-36b2af239332">
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/1bf4c103-241e-4cb6-892a-aefda8f5b5ab">
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/0997b506-f434-4016-94b9-b2fa5f97146e">
