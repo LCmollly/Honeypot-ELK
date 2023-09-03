@@ -229,7 +229,7 @@ Prueba de ejecución ansible
 
 Respuesta satisfactoria
 
-##	VISUALIZACIÓN DE LOGS Y CREACIÓN DE DASHBOARDS
+##	Visualización de logs y creación de dashboards
 Listamos los archivos indexados utilizando el comando:
     
     curl 'http://localhost:9200/_cat/indices?v'
