@@ -3,7 +3,7 @@ Archivos de configuración para la implementación de un honeypot IoT y el monit
 ## Despliegue del Honeypot
 En esta sección se detallará el proceso de instalación y configuración del software elegido para implementar el honeypot IoT, "Cowrie".
 
-<img width="454" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/d8a52d66-7882-4092-8ddb-bf418c85b306">
+<img width="1200" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/d8a52d66-7882-4092-8ddb-bf418c85b306">
 
 ### Instalación de dependencias
 Antes de instalar cualquier software, siempre es una buena práctica actualizar la lista de paquetes del sistema. Para lo cual se utilizaron los comandos:
