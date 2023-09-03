@@ -10,7 +10,11 @@ Antes de instalar cualquier software, siempre es una buena práctica actualizar 
   
     sudo apt update
 
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/2b1e8c12-8653-4371-8c16-e3f46a45197c">
+
     sudo apt upgrade
+
+<img width="700" alt="image" src="https://github.com/LCmollly/Honeypot-ELK/assets/103143023/1a0809d1-7b85-4d6d-9a79-9e58de6e3dbb">
 
 Luego se instalaron las dependencias previo a la instalación de cowrie.
 
