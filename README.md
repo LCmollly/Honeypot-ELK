@@ -1,6 +1,6 @@
 # Honeypot-ELK
 Archivos de configuración para la implementación de un honeypot IoT y el monitoreo de eventos con ELK
-4.2	DESPLIEGUE DEL HONEYPOT
+##DESPLIEGUE DEL HONEYPOT
 En esta sección se detallará el proceso de instalación y configuración del software elegido para implementar el honeypot IoT, "Cowrie" [8].
 4.2.1	INSTALACIÓN DE DEPENDENCIAS
 Antes de instalar cualquier software, siempre es una buena práctica actualizar la lista de paquetes del sistema. Para lo cual se utilizaron los comandos: 
